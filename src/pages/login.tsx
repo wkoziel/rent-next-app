@@ -1,14 +1,18 @@
 import React from 'react';
-import { Container, Paper, Typography, TextField, Button } from '@mui/material';
+import {
+   Container,
+   Paper,
+   Typography,
+   TextField,
+   Button,
+   Stack,
+} from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod'; // Import zod
-import Link from 'next/link';
+import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 
 const schema = z.object({
-   username: z
-      .string()
-      .min(3, 'Username must be at least 3 characters')
-      .min(1, 'Username is required'),
+   email: z.string().email('Invalid email address').min(1, 'Email is required'),
    password: z
       .string()
       .min(6, 'Password must be at least 6 characters')
@@ -20,10 +24,12 @@ const LoginPage = () => {
       register,
       handleSubmit,
       formState: { errors },
-   } = useForm();
+   } = useForm({
+      mode: 'onSubmit',
+   });
+   const { t } = useTranslation();
 
    const onSubmit = (data: any) => {
-      // Validate using Zod schema
       try {
          schema.parse(data);
          // Validation succeeded, implement your login logic here
@@ -44,42 +50,38 @@ const LoginPage = () => {
          }}
       >
          <Paper elevation={3} sx={{ padding: 3, width: '100%' }}>
-            <Typography variant="h5" align="center" gutterBottom>
-               Login
-            </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
-               <TextField
-                  label="Username"
-                  fullWidth
-                  margin="normal"
-                  {...register('username')}
-                  error={!!errors.username}
-                  helperText={errors.username?.message as string}
-               />
-               <TextField
-                  label="Password"
-                  fullWidth
-                  margin="normal"
-                  type="password"
-                  {...register('password')}
-                  error={!!errors.password}
-                  helperText={errors.password?.message as string}
-               />
-               <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-               >
-                  Login
-               </Button>
+               <Stack spacing={4}>
+                  <Typography variant="h5" align="center" gutterBottom>
+                     {t('login')}
+                  </Typography>
+                  <TextField
+                     label="Email"
+                     fullWidth
+                     margin="normal"
+                     {...register('email')}
+                     error={!!errors.email}
+                     helperText={errors.email?.message as string}
+                  />
+                  <TextField
+                     label="Password"
+                     fullWidth
+                     margin="normal"
+                     type="password"
+                     {...register('password')}
+                     error={!!errors.password}
+                     helperText={errors.password?.message as string}
+                  />
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     color="primary"
+                     fullWidth
+                  >
+                     {t('login')}
+                  </Button>
+               </Stack>
             </form>
-            <Typography variant="body2" align="center" mt={2}>
-               Dont have an account?{' '}
-               <Link href="/register" color="primary">
-                  Register
-               </Link>
-            </Typography>
          </Paper>
       </Container>
    );

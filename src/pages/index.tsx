@@ -1,9 +1,12 @@
-import Navbar from '@/components/Navbar/Navbar';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function IndexPage() {
-   return (
-      <>
-         <Navbar />
-      </>
-   );
+   const { push } = useRouter();
+
+   useEffect(() => {
+      push('/login');
+   }, [push]);
+
+   return <div />;
 }
