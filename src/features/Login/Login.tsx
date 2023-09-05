@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   Container,
@@ -21,18 +20,19 @@ const schema = z.object({
     .min(1, 'Password is required'),
 });
 
+type FormValues = z.infer<typeof schema>;
+
 export const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormValues>({
     mode: 'onSubmit',
   });
-  const { t } = useTranslation();
   const { login } = useAuth();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormValues) => {
     try {
       schema.parse(data);
       login(data.email, data.password);
@@ -55,7 +55,7 @@ export const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={4}>
             <Typography variant="h5" align="center" gutterBottom>
-              {t('login')}
+              Zaloguj
             </Typography>
             <TextField
               label="Email"
@@ -75,7 +75,7 @@ export const Login = () => {
               helperText={errors.password?.message as string}
             />
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              {t('login')}
+              Zaloguj się
             </Button>
           </Stack>
         </form>

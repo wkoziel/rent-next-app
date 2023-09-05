@@ -1,7 +1,8 @@
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 
+import { DataGrid } from '@/components/Datagrid/Datagrid';
 import { Clients } from '@/types/Clients';
 
 type ClientsDatagridProps = {
